@@ -1,0 +1,87 @@
+version: "3"
+services:
+    api:
+        build:
+            context: .
+            dockerfile: ./app/Dockerfile
+        tty: true
+        volumes:
+            - ./api/src:/go/src
+        ports: 
+            - 8080:8080
+        environment:
+            - "GOPATH=/go"
+        depends_on: 
+            - db
+
+    front:
+        build:
+            context: .
+            dockerfile: ./front/Dockerfile
+        tty: true
+        volumes: 
+            - ./front:/usr/src/
+        command: 
+            - sh -c "cd golang-app && yarn dev"
+        ports: 
+            - 3500:3000
+        environment: 
+            - NODE_ENV=development
+
+    nginx:
+        image: nginx:latest
+        tty: true
+        volumes:
+            - ./nginx/public:/var/www/
+            - ./nginx/config/nginx.conf:/etc/nginx/conf.d/default.conf
+            - ./nginx/error/:/var/log/nginx/
+        ports:
+            - 8000:80
+        depends_on: 
+            - api
+    
+    db:
+        image: mysql:8
+        volumes: 
+            - ./db/db-data:/var/lib/mysql
+            - ./db/logs:/var/log/mysql
+            - ./db/config/my.cnf:/etc/mysql/conf.d/my.cnf
+        ports:
+            - ${DB_PORT}:3306
+        environment: 
+            - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
+            - MYSQL_DATABASE=${DB_NAME}
+            - MYSQL_USER=${DB_USER}
+            - MYSQL_PASSWORD=${DB_PASS}
+    
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        ports: 
+            - 8888:80
+        environment: 
+            - PMA_ARBITRARY=1
+            - PMA_HOST=db
+            - PMA_USER=root
+            - PMA_PASSWORD=${DB_ROOT_PASS}
+        depends_on: 
+            - db
+
+
+# node.js
+  # create-next-app をインストール
+  # docker-compose run --rm front npm install create-next-app
+
+  # プロジェクトを作成
+  # docker-compose run --rm front npx create-next-app golang-app --ts
+
+# docker-compose up -d           コンテナ起動
+# docker-compose exec api bash    コンテナに入る
+
+# ここからコンテナ内
+# go get -u [パッケージ名]         パッケージのインストール
+
+
+# 導入パッケージ
+# Gin   フレームワーク
+# Gorm  データベース操作 ORM
+# air   ホットリロード
