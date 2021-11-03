@@ -1,0 +1,9 @@
+# ディレクトリ保持用設定
+# db
+  db/
+  !db/.gitkeep
+
+# nginx
+  nginx/error/
+  !nginx/error/.gitkeep
+  !nginx/public/.gitkeep
