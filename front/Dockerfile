@@ -1,2 +1,2 @@
-FROM node:alpine3.14
+FROM node:buster-slim
 WORKDIR /usr/src/app

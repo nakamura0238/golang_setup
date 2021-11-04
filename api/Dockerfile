@@ -9,7 +9,8 @@ ENV GO111MODULE=on
 # ワーキングディレクトリの設定 環境変数で参照
 WORKDIR $WORK_ROOT
 
-COPY ./src .
+# docker-compose.yml の build context からのパス
+COPY ./src ./
 
 # パッケージ
 RUN go get -u github.com/cosmtrek/air &&\

@@ -2,8 +2,8 @@ version: "3"
 services:
     api:
         build:
-            context: .
-            dockerfile: ./app/Dockerfile
+            context: ./api
+            dockerfile: Dockerfile
         tty: true
         volumes:
             - ./api/src:/go/src
@@ -16,13 +16,12 @@ services:
 
     front:
         build:
-            context: .
-            dockerfile: ./front/Dockerfile
+            context: ./front
+            dockerfile: Dockerfile
         tty: true
         volumes: 
-            - ./front:/usr/src/
-        command: 
-            - sh -c "cd golang-app && npm run dev"
+            - ./front:/usr/src/app
+        command: bash -c "cd golang-app && npm run dev"
         ports: 
             - 3500:3000
         environment: 
@@ -39,6 +38,7 @@ services:
             - 8000:80
         depends_on: 
             - api
+            - front
     
     db:
         image: mysql:8
@@ -79,7 +79,6 @@ services:
 
 # ここからコンテナ内
 # go get -u [パッケージ名]         パッケージのインストール
-
 
 # 導入パッケージ
 # Gin   フレームワーク
