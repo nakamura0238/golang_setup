@@ -22,7 +22,7 @@ services:
         volumes: 
             - ./front:/usr/src/
         command: 
-            - sh -c "cd golang-app && yarn dev"
+            - sh -c "cd golang-app && npm run dev"
         ports: 
             - 3500:3000
         environment: 

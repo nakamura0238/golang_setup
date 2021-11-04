@@ -8,7 +8,7 @@ GO言語環境構築のためのファイル
 - phpmyadmin
 ## 起動コマンド
 ### NEXT.js + TypeScript
-`docker-compose run --rm front yarn install create-next-app`
+`docker-compose run --rm front npm install create-next-app`
 
 `docker-compose run --rm front npx create-next-app [プロジェクト名] --ts`
 ### コンテナ起動
