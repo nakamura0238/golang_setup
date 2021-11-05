@@ -1,2 +1,2 @@
-FROM node:buster-slim
+FROM node:buster
 WORKDIR /usr/src/app
